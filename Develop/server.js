@@ -21,7 +21,6 @@ app.get('/api/notes/:id', (req, res) => {
 
 
 	for (let i = 0; i < notes.length; i++) {
-        console.log("notes[i].id ", typeof notes[i].id)
 		if (chosen === (notes[i].id).toString()) {
 			return res.json(notes[i]);
 		}
@@ -31,11 +30,28 @@ app.get('/api/notes/:id', (req, res) => {
 
 app.post('/api/notes', (req, res) => {
     const newNote = req.body;
-    newNote.id = notes.length + 1;
     notes.push(newNote);
+    for(i = 0; i < notes.length; i++){
+        notes[i].id = i;
+        console.log(notes[i])
+    }
     fs.writeFile('./db/db.json', JSON.stringify(notes), (err) =>
     err ? console.log(err) : console.log('success'));
     res.json(newNote);
 });
+
+app.delete('/api/notes/:id', (req, res) => {
+    const chosen = req.params.id;
+    for(i = 0; i < notes.length; i++){
+        if(chosen === (notes[i].id).toString())
+        notes.splice(i, 1);
+    }
+    for(i = 0; i < notes.length; i++){
+        notes[i].id = i;
+    }
+    fs.writeFile('./db/db.json', JSON.stringify(notes), (err) =>
+    err ? console.log(err) : console.log('success'));
+    res.json(notes)
+})
 
 app.listen(PORT, () => console.log(`App listening on PORT ${PORT}`));
