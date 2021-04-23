@@ -13,12 +13,17 @@ app.use(express.static('public'));
 
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, '../public/index.html')));
 app.get('/notes', (req, res) => res.sendFile(path.join(__dirname, './public/notes.html')));
-app.get('/api/notes', (req, res) => res.json(noteData));
+app.get('/api/notes', (req, res) => {
+    fs.readFile('./db/db.json', 'utf-8', function(err, data) {
+        try {
+            res.json(JSON.parse(data));
+        } catch(err) {
+            res.json([]);
+        }
+    })
+});
 app.get('/api/notes/:id', (req, res) => {
 	const chosen = req.params.id;
-
-	console.log(typeof chosen);
-
 
 	for (let i = 0; i < notes.length; i++) {
 		if (chosen === (notes[i].id).toString()) {
@@ -32,8 +37,7 @@ app.post('/api/notes', (req, res) => {
     const newNote = req.body;
     notes.push(newNote);
     for(i = 0; i < notes.length; i++){
-        notes[i].id = i;
-        console.log(notes[i])
+        notes[i].id = i.toString();
     }
     fs.writeFile('./db/db.json', JSON.stringify(notes), (err) =>
     err ? console.log(err) : console.log('success'));
@@ -43,15 +47,16 @@ app.post('/api/notes', (req, res) => {
 app.delete('/api/notes/:id', (req, res) => {
     const chosen = req.params.id;
     for(i = 0; i < notes.length; i++){
-        if(chosen === (notes[i].id).toString())
+        if(chosen === notes[i].id){
         notes.splice(i, 1);
     }
+}
     for(i = 0; i < notes.length; i++){
-        notes[i].id = i;
+        notes[i].id = i.toString();
     }
     fs.writeFile('./db/db.json', JSON.stringify(notes), (err) =>
     err ? console.log(err) : console.log('success'));
-    res.json(notes)
+    res.json(notes);
 })
 
 app.listen(PORT, () => console.log(`App listening on PORT ${PORT}`));
