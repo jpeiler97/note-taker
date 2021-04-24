@@ -23,7 +23,7 @@ This is an app using Express that allows the user to make and save simple notes 
 ## Installation
 No need to install. The deployed application can be found here:
 
-https://nameless-reaches-21570.herokuapp.com/notes
+https://nameless-reaches-21570.herokuapp.com/
 
 If you'd prefer to use it locally:
 
