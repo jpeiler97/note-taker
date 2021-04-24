@@ -40,6 +40,9 @@ To use this app:
 3. To view a note, click one on the left of the page. To exit out of the note and start a new one, click the pencil icon at the top-right corner.
 4. To delete a note, click the trash can icon to the right of the note.
 
+Screenshot of Functionality:
+![Note Taking](/public/assets/images/screenshot1.png?raw=true "Note Taking")
+
 <a name="license"></a>
 ## License
 This application is covered under the MIT license.
